@@ -1,7 +1,7 @@
 {
   "name": "@mrozilla/gatsby-theme-netlify_cms",
   "description": "Gatsby theme using Netlify CMS and MDX",
-  "version": "0.0.3",
+  "version": "0.0.2",
   "license": "MIT",
   "main": "index.js",
   "homepage": "https://www.gatsby-theme-netlify_cms.netlify.com",
@@ -37,10 +37,10 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.16.0",
-    "gatsby": "2.17.7",
+    "gatsby": "^2.17.7",
     "prettier": "^1.18.2",
-    "react": "16.11.0",
-    "react-dom": "16.11.0"
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0"
   },
   "peerDependencies": {
     "gatsby": "^2.17.2",
