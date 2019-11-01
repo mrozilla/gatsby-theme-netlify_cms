@@ -1,7 +1,7 @@
 {
   "name": "gatsby-theme-netlify_cms",
   "description": "Gatsby theme using Netlify CMS and MDX",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "main": "index.js",
   "homepage": "https://www.gatsby-theme-netlify_cms.netlify.com",
