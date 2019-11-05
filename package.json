@@ -14,14 +14,14 @@
     "purge": "rm -rf node_modules && yarn"
   },
   "dependencies": {
-    "@babel/core": "^7.6.4",
-    "@babel/preset-env": "^7.6.3",
-    "@babel/preset-react": "^7.6.3",
+    "@babel/core": "^7.7.0",
+    "@babel/preset-env": "^7.7.1",
+    "@babel/preset-react": "^7.7.0",
     "@mdx-js/mdx": "^1.5.1",
     "gatsby-plugin-mdx": "^1.0.55",
     "gatsby-plugin-netlify-cms": "^4.1.25",
     "gatsby-plugin-sharp": "2.2.36",
-    "gatsby-remark-images": "3.1.28",
+    "gatsby-remark-images": "3.1.29",
     "gatsby-source-filesystem": "2.1.35",
     "gatsby-transformer-sharp": "^2.3.2",
     "map-obj": "^4.1.0",

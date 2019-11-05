@@ -50,7 +50,7 @@ const helpers = {
     { name: 'subtitle', label: 'Subtitle', fields: [{ name: 'subtitle' }] },
     { name: 'mdx', label: 'Mdx', fields: [{ name: 'mdx', widget: 'markdown' }] },
     { name: 'image', label: 'Image', fields: [primitives.image] },
-    { name: 'buttons', label: 'Buttons', fields: [primitives.buttons] }, // TODO: test
+    { name: 'buttons', label: 'Buttons', fields: [primitives.buttons] },
   ],
 };
 
