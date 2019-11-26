@@ -10,8 +10,11 @@ const primitives = {
       { name: 'title' },
       {
         name: 'url',
-        hint: 'A URL must start with "http://" or "https://"',
-        pattern: ['^(http|https)://', 'A URL must start with "http://" or "https://"'],
+        hint: 'A URL must start with "https://" (for external links) or "/" (for local links)',
+        pattern: [
+          '(^https?://)|(^/)',
+          'A URL must start with "https://" (for external links) or "/" (for local links)',
+        ],
       },
       {
         name: 'look',
@@ -35,8 +38,11 @@ const primitives = {
   },
   url: {
     name: 'url',
-    hint: 'A URL must start with "http://" or "https://"',
-    pattern: ['^(http|https)://', 'A URL must start with "http://" or "https://"'],
+    hint: 'A URL must start with "https://" (for external links) or "/" (for local links)',
+    pattern: [
+      '(^https?://)|(^/)',
+      'A URL must start with "https://" (for external links) or "/" (for local links)',
+    ],
   },
 };
 
