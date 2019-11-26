@@ -17,8 +17,8 @@ module.exports = ({ reporter }) => {
       reporter.info(`creating "src/cms/${folder}" directory`);
       fs.mkdirSync(`src/cms/${folder}`);
       fs.copyFileSync(
-        path.join(__dirname, `../src/defaults/${folder}/demo.mdx`),
-        `src/cms/${folder}/demo.mdx`,
+        path.join(__dirname, `../src/defaults/${folder}/default.mdx`),
+        `src/cms/${folder}/default.mdx`,
       );
     }
 

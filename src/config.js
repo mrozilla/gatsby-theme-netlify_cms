@@ -4,22 +4,39 @@
 
 const primitives = {
   buttons: {
-    name:   'buttons',
+    name: 'buttons',
     widget: 'list',
     fields: [
       { name: 'title' },
-      { name: 'url' },
       {
-        name:    'look',
-        widget:  'select',
+        name: 'url',
+        hint: 'A URL must start with "http://" or "https://"',
+        pattern: ['^(http|https)://', 'A URL must start with "http://" or "https://"'],
+      },
+      {
+        name: 'look',
+        widget: 'select',
         options: ['primary', 'secondary', 'tertiary', 'appStore', 'playStore'],
       },
     ],
   },
   image: {
-    name:   'image',
+    name: 'image',
     widget: 'object',
-    fields: [{ name: 'src', widget: 'image' }, { name: 'alt' }, { name: 'ratio' }],
+    fields: [
+      { name: 'src', widget: 'image' },
+      { name: 'alt', hint: "A description of what's in the image'" },
+      {
+        name: 'ratio',
+        hint: 'Required format: N/M, e.g. 3/2',
+        pattern: ['\\d\\/\\d', 'Required format: N/M, e.g. 3/2'],
+      },
+    ],
+  },
+  url: {
+    name: 'url',
+    hint: 'A URL must start with "http://" or "https://"',
+    pattern: ['^(http|https)://', 'A URL must start with "http://" or "https://"'],
   },
 };
 
@@ -29,17 +46,17 @@ const primitives = {
 
 const helpers = {
   createExtensionFormat: {
-    create:    true,
+    create: true,
     extension: 'mdx',
-    format:    'frontmatter',
+    format: 'frontmatter',
   },
   meta: {
-    name:   'meta',
+    name: 'meta',
     widget: 'object',
     fields: [
       { name: 'title' },
       { name: 'description' },
-      { name: 'permalink' },
+      { ...primitives.url, name: 'permalink' },
       { name: 'ogImage', widget: 'image', default: '/assets/og.png' },
     ],
   },
@@ -60,55 +77,55 @@ const helpers = {
 
 const collections = [
   {
-    label:          'Menus',
+    label: 'Menus',
     label_singular: 'Menu',
-    name:           'menus',
-    folder:         'src/cms/menus',
+    name: 'menus',
+    folder: 'src/cms/menus',
     ...helpers.createExtensionFormat,
-    fields:         [
+    fields: [
       { name: 'title' },
       {
-        name:   'announcement',
+        name: 'announcement',
         widget: 'list',
-        fields: [{ name: 'title' }, { name: 'url' }, { name: 'body' }],
+        fields: [{ name: 'title' }, primitives.url, { name: 'body' }],
       },
       {
-        name:   'links',
+        name: 'links',
         widget: 'list',
-        types:  [
+        types: [
           {
-            name:   'link',
-            label:  'Link',
-            fields: [{ name: 'title' }, { name: 'url' }, { name: 'badge', required: false }],
+            name: 'link',
+            label: 'Link',
+            fields: [{ name: 'title' }, ...primitives.url, { name: 'badge', required: false }],
           },
           {
-            name:   'nested',
-            label:  'Nested',
+            name: 'nested',
+            label: 'Nested',
             fields: [
               { name: 'title' },
               {
-                name:   'links',
+                name: 'links',
                 widget: 'list',
                 fields: [
                   { name: 'title' },
-                  { name: 'url', required: false },
+                  { ...primitives.url, required: false },
                   { name: 'badge', required: false },
                 ],
               },
             ],
           },
           {
-            name:   'button',
-            label:  'Button',
+            name: 'button',
+            label: 'Button',
             fields: [
               { name: 'title' },
-              { name: 'url' },
+              primitives.url,
               { name: 'look', widget: 'select', options: ['primary', 'secondary', 'tertiary'] },
             ],
           },
           {
-            name:   'markdown',
-            label:  'Markdown',
+            name: 'markdown',
+            label: 'Markdown',
             fields: [{ name: 'title' }, { name: 'mdx', widget: 'markdown' }],
           },
         ],
@@ -117,83 +134,92 @@ const collections = [
   },
 
   {
-    label:          'Pages',
+    label: 'Pages',
     label_singular: 'Page',
-    name:           'pages',
-    folder:         'src/cms/pages',
+    name: 'pages',
+    folder: 'src/cms/pages',
     ...helpers.createExtensionFormat,
-    fields:         [
+    fields: [
       { name: 'title' },
       { name: 'date', widget: 'datetime' },
       { ...helpers.meta },
       {
-        name:           'blocks',
-        label:          'Blocks',
+        name: 'blocks',
+        label: 'Blocks',
         label_singular: 'Block',
-        widget:         'list',
-        types:          [
+        widget: 'list',
+        types: [
           {
-            name:   'hero',
-            label:  'Hero',
+            name: 'hero',
+            label: 'Hero',
             fields: [
               {
-                name:   'header',
-                label:  'Header',
+                name: 'header',
+                label: 'Header',
                 widget: 'list',
-                types:  [
+                types: [
                   {
-                    name:   'announcement',
-                    label:  'Announcement',
-                    fields: [{ name: 'url' }, { name: 'title' }, { name: 'body' }],
+                    name: 'announcement',
+                    label: 'Announcement',
+                    fields: [{ name: 'title' }, primitives.url, { name: 'body' }],
                   },
                   ...helpers.contentTypes,
                 ],
               },
               { name: 'backgroundImage', widget: 'image', required: false },
-              { name: 'video', required: false },
+              {
+                name: 'video',
+                hint: 'This has to be a url in the format of "https://www.youtube.com/embed/<id>" ',
+                required: false,
+              },
             ],
           },
           {
-            name:   'sidekick',
-            label:  'Sidekick',
+            name: 'sidekick',
+            label: 'Sidekick',
             fields: [
               {
-                name:   'header',
-                label:  'Header',
+                name: 'header',
+                label: 'Header',
                 widget: 'list',
-                types:  [...helpers.contentTypes],
+                types: [...helpers.contentTypes],
               },
               {
-                name:           'columns',
-                label:          'Columns',
+                name: 'columns',
+                label: 'Columns',
                 label_singular: 'Column',
-                widget:         'list',
-                fields:         [
-                  { name: 'width', default: '1fr' },
+                widget: 'list',
+                fields: [
                   {
-                    name:           'blocks',
-                    label:          'Blocks',
+                    name: 'width',
+                    hint: "Required format: Nfr, e.g. '1fr'",
+                    pattern: ['\\dfr', 'Required format: N/M, e.g. 1fr'],
+                    default: '1fr',
+                  },
+                  {
+                    name: 'blocks',
+                    label: 'Blocks',
                     label_singular: 'Block',
-                    widget:         'list',
-                    types:          [
+                    widget: 'list',
+                    types: [
                       ...helpers.contentTypes,
                       {
-                        name:   'map',
-                        label:  'Map',
+                        name: 'map',
+                        label: 'Map',
                         fields: [
                           {
-                            name:   'map',
+                            name: 'map',
                             widget: 'object',
                             fields: [{ name: 'geo', widget: 'map' }, { name: 'zoom' }],
                           },
                         ],
                       },
                       {
-                        name:   'grid',
-                        label:  'Grid',
+                        name: 'grid',
+                        label: 'Grid',
                         fields: [
                           {
-                            name:   'grid',
+                            name: 'grid',
                             widget: 'list',
                             fields: [
                               { name: 'icon', required: false },
@@ -205,18 +231,24 @@ const collections = [
                       },
                     ],
                   },
-                  { name: 'textAlign', required: false },
+                  {
+                    name: 'textAlign',
+                    widget: 'select',
+                    options: ['start, center, end'],
+                    default: 'start',
+                    required: false,
+                  },
                 ],
               },
             ],
           },
           {
-            name:   'testimonials',
-            label:  'Testimonials',
+            name: 'testimonials',
+            label: 'Testimonials',
             fields: [
               { name: 'header', label: 'Header', widget: 'list', types: [...helpers.contentTypes] },
               {
-                name:   'testimonials',
+                name: 'testimonials',
                 widget: 'list',
                 fields: [
                   { name: 'name' },
@@ -229,48 +261,53 @@ const collections = [
             ],
           },
           {
-            name:   'logos',
-            label:  'Logos',
+            name: 'logos',
+            label: 'Logos',
             fields: [
               { name: 'header', label: 'Header', widget: 'list', types: [...helpers.contentTypes] },
               {
-                name:   'logos',
+                name: 'logos',
                 widget: 'list',
-                fields: [{ name: 'title' }, { name: 'url' }, primitives.image],
+                fields: [{ name: 'title' }, primitives.url, primitives.image],
               },
             ],
           },
           {
-            name:   'pricing',
-            label:  'Pricing',
+            name: 'pricing',
+            label: 'Pricing',
             fields: [
               { name: 'header', label: 'Header', widget: 'list', types: [...helpers.contentTypes] },
               {
-                name:   'pricing',
+                name: 'pricing',
                 widget: 'list',
                 fields: [
                   { name: 'title' },
                   {
-                    name:   'price',
+                    name: 'price',
                     widget: 'object',
                     fields: [
                       { name: 'monthly', widget: 'number' },
                       { name: 'yearly', widget: 'number' },
                     ],
                   },
-                  { name: 'currency' },
+                  {
+                    name: 'currency',
+                    hint:
+                      'Required format: 3-letter currency code as defined in https://www.currency-iso.org/en/home/tables/table-a1.html',
+                    pattern: '[A-Z]{3}',
+                  },
                   { name: 'mdx', widget: 'markdown', required: false },
                 ],
               },
             ],
           },
           {
-            name:   'faq',
-            label:  'FAQ',
+            name: 'faq',
+            label: 'FAQ',
             fields: [
               { name: 'header', label: 'Header', widget: 'list', types: [...helpers.contentTypes] },
               {
-                name:   'faq',
+                name: 'faq',
                 widget: 'list',
                 fields: [
                   { name: 'title', label: 'Question' },
@@ -280,12 +317,12 @@ const collections = [
             ],
           },
           {
-            name:   'people',
-            label:  'People',
+            name: 'people',
+            label: 'People',
             fields: [
               { name: 'header', label: 'Header', widget: 'list', types: [...helpers.contentTypes] },
               {
-                name:   'people',
+                name: 'people',
                 widget: 'list',
                 fields: [
                   { name: 'name' },
@@ -293,17 +330,17 @@ const collections = [
                   { name: 'company', required: false },
                   { name: 'mdx', label: 'Description', widget: 'markdown', required: false },
                   { ...primitives.image, required: false },
-                  { name: 'contact', widget: 'list', fields: [{ name: 'icon' }, { name: 'url' }] },
+                  { name: 'contact', widget: 'list', fields: [{ name: 'icon' }, primitives.url] },
                 ],
               },
             ],
           },
           {
-            name:   'jobs',
-            label:  'Jobs',
+            name: 'jobs',
+            label: 'Jobs',
             fields: [
               { name: 'header', label: 'Header', widget: 'list', types: [...helpers.contentTypes] },
-              { name: 'jobs', widget: 'list', fields: [{ name: 'title' }, { name: 'url' }] },
+              { name: 'jobs', widget: 'list', fields: [{ name: 'title' }, primitives.url] },
             ],
           },
         ],
@@ -312,12 +349,12 @@ const collections = [
   },
 
   {
-    label:          'Posts',
+    label: 'Posts',
     label_singular: 'Blog post',
-    name:           'posts',
-    folder:         'src/cms/posts',
+    name: 'posts',
+    folder: 'src/cms/posts',
     ...helpers.createExtensionFormat,
-    fields:         [
+    fields: [
       { name: 'title' },
       { name: 'subtitle', required: false },
       { name: 'date', widget: 'datetime' },
@@ -335,15 +372,15 @@ const collections = [
 
 const config = {
   backend: {
-    name:          'git-gateway',
+    name: 'git-gateway',
     squash_merges: true,
   },
-  site_url:              'https://www.example.com',
-  media_folder:          'static/assets',
+  site_url: 'https://www.example.com',
+  media_folder: 'static/assets',
   media_folder_relative: true,
-  public_folder:         '/assets',
-  slug:                  { encoding: 'ascii', clean_accents: true },
-  load_config_file:      false,
+  public_folder: '/assets',
+  slug: { encoding: 'ascii', clean_accents: true },
+  load_config_file: false,
 
   collections,
 };
