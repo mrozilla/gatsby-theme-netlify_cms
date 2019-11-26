@@ -96,7 +96,7 @@ const collections = [
           {
             name: 'link',
             label: 'Link',
-            fields: [{ name: 'title' }, ...primitives.url, { name: 'badge', required: false }],
+            fields: [{ name: 'title' }, primitives.url, { name: 'badge', required: false }],
           },
           {
             name: 'nested',
